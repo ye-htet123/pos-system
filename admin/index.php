@@ -35,6 +35,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    <div class="col-md-3 mb-3">
+                                        <a href="customers.php" class="text-decoration-none">
+                                            <div class="card card-body bg-warning p-3">
+                                                <p class="text-sm mb-0 text-capitalize text-dark">Total Customer</p>
+                                                <h5 class="fw-bold mb-0 text-dark">
+                                                    <?= getCount('customers'); ?>
+                                                </h5>
+                                            </div>
+                                        </a>
+                                    </div>
 
                                     <div class="col-md-3 mb-3">
                                         <a href="products.php" class="text-decoration-none">
