@@ -1,25 +1,39 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 $(document).ready(function () {
 
     alertify.set('notifier', 'position', 'top-right');
+
+
+    $('.order-now-btn').click(function () {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+
+        $.ajax({
+            url: 'orders-code.php',
+            method: 'POST',
+            data: {
+                id: id,
+                name: name
+            },
+            success: function (response) {
+                // Optionally show success message or update UI
+                console.log('Order added successfully');
+                // Example: update cart count
+                let current = parseInt($('#cart-count').text());
+                $('#cart-count').text(current + 1);
+            },
+            error: function () {
+                alert('Something went wrong!');
+            }
+        });
+    });
 
 
     $(document).on('click', '.increment', function () {
 
         var $quantityInput = $(this).closest('.qtyBox').find('.qty');
         var productId = $(this).closest('.qtyBox').find('.prodId').val();
+
+
         var currentValue = parseInt($quantityInput.val());
 
         if (!isNaN(currentValue)) {
@@ -49,6 +63,16 @@ $(document).ready(function () {
         window.location.reload();
     });
 
+
+    $(document).on('click', '.confirm', function () {
+
+
+
+
+        window.location.reload();
+    });
+
+
     function productIncDec(prodId, qty) {
 
 
@@ -69,7 +93,7 @@ $(document).ready(function () {
                 //  console.log(response);
                 if (response.status == 200) {
                     // window.location.reload();
-                    $('#productArea').load(' #productContent');
+                    $('#productArea').load(' #productContent'); // reload only the product list
                     alertify.success(response.message);
 
                 } else {
@@ -89,7 +113,16 @@ $(document).ready(function () {
         console.log('proceedToPlace');
         var payment_mode = $('#payment_mode').val();
         var cphone = $('#cphone').val();
-        console.log(cphone);
+        var cartStatus = $('#cart_not_empty').val();
+        console.log("ok ok buddy")
+        console.log(cartStatus)
+
+
+        if (cartStatus == '0') {
+            swal(" PLEASE ", "Your cart is empty. Add some products.", "warning");
+            return false;
+        }
+
         if (payment_mode == '') {
             swal(" PLEASE ", "Select your payment method", "warning");
             return false;
@@ -105,7 +138,6 @@ $(document).ready(function () {
             url: "orders-code.php",
             data: {
                 'proceedToPlaceBtn': true,
-
                 'cphone': cphone,
                 'payment_mode': payment_mode
 
@@ -239,7 +271,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
 
 });

@@ -32,6 +32,20 @@
     </div>
   </div>
 </div>
+<style>
+
+    
+ .card {
+ 
+  overflow: hidden; /* prevents inner content from overflowing */
+  word-wrap: break-word; /* ensures long words break and wrap */
+}
+
+.card * {
+  max-width: 100%; /* makes sure child elements don’t stretch out */
+  box-sizing: border-box; /* padding & border won't increase width */
+}
+</style>
 
 <div class="container-fluid px-4">
 
@@ -61,8 +75,87 @@
 
                                 ?>
 
-<table class="m-12" style="width: 100%; margin-left: 130px;">
 
+ <style>
+/* Base screen styling */
+.print-table {
+    margin-left: 130px;
+   
+}
+
+/* Print-specific styling */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        background-color: #fff;
+        color: #000;
+    }
+
+    .print-table {
+        width: 100%;
+        margin: 0 auto;
+        padding: 30px;
+        box-sizing: border-box;
+    }
+
+    .print-table td {
+        vertical-align: top;
+        padding: 5px;
+    }
+
+    .print-table h5 {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .responsive {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        
+    }
+    
+
+    table th,
+    table td {
+        border: 0px solid #ccc;
+        padding: 8px;
+        text-align: left;
+    }
+
+    table th {
+        background-color: none;
+    }
+
+    img {
+        max-width: 100px;
+        height: auto;
+    }
+     #myBillingArea {
+        width: 100% !important;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+}
+</style>
+
+
+<table class=" print-table" >
 <tr>
     <td></td>
     <td>
@@ -80,31 +173,25 @@
 
 <tr>
     <td>
-        <div>
-            <div>
-                <h5 style="margin-bottom: 15px;">Customer Details</h5>
-                                              <p style="margin: 0;">Name: <?= $cRowData['name']   ?></p>
-                                              <p style="margin: 0;">Phone: <?= $cRowData['phone']   ?></p>
-                                              <p style="margin: 0;">Email: <?= $cRowData['email']   ?></p>
-
-            </div>
+        <div class="d-none d-md-block"> <!-- Hides on small screens -->
+        <h5>Customer Details</h5>
+        <p style="margin: 0;">Name: <?= $cRowData['name'] ?></p>
+            <p style="margin: 0;">Phone: <?= $cRowData['phone'] ?></p>
+            <p style="margin: 0;">Email: <?= $cRowData['email'] ?></p>
         </div>
     </td>
     <td></td>
     <td>
-        <div>
-            <div>
-            <h5 style="margin-bottom: 15px;">Invoice Details</h5>
-                                              <p style="margin: 0;">Invoice Number: INV-<?= $invoiceNo; ?></p>
-                                              <p style="margin: 0;">Date: <?= date(' d M Y')   ?></p>
-                                              <p style="margin: 0;">Address :  12 street LanbaTaw PYAY</p>
-            </div>
+        <div class="d-none d-md-block"> <!-- Hides on small screens -->
+        <h5>Invoice Details</h5>
+        <p style="margin: 0;">Invoice Number: INV-<?= $invoiceNo; ?></p>
+            <p style="margin: 0;">Date: <?= date('d M Y') ?></p>
+            <p style="margin: 0;">Address: 12 street LanbaTaw PYAY</p>
         </div>
     </td>
 </tr>
+
 </table>
-
-
 
                                   <?php
                               }else{
@@ -123,15 +210,16 @@
                       if(isset($_SESSION['productItems'])){
                               $sessionProducts =$_SESSION['productItems'];
                               ?>
-                        <div class="table-responsive mb-3">
-                          <table style="width:80%;" align="center" cellpadding="10">
+                        <div class="table-responsive secTable mb-3">
+                            <table  style="width:60%; margin-left: 120px;" align="center" cellpadding="10">
+
 
                             <thead>
 
                             <tr>
 
                             <th align="start" style="border-bottom: 1px solid  #ccc;text-align:center;" width:"15%">ID</th>
-                            <th  colspan="2"  align="start" style="border-bottom: 1px solid  #ccc;text-align:center;">Product name   </th>
+                            <th align="start" colspan="2" style="border-bottom: 1px solid  #ccc;text-align:center;">Product name   </th>
                             <th align="start" style="border-bottom: 1px solid  #ccc;text-align:center;" width:"10%">Price</th>
                             <th align="start" style="border-bottom: 1px solid  #ccc;text-align:center;" width:"10%">Quantity</th>
                             <th align="start" style="border-bottom: 1px solid  #ccc;text-align:center;" width:"15%">Total Cost</th>
@@ -207,6 +295,24 @@
 </div>
 
 <script>
+
+    //get size of screen 
+
+    window.addEventListener('load', adjustMargin);
+    window.addEventListener('resize', adjustMargin);
+
+    function adjustMargin() {
+        const table = document.querySelector('table');
+        if (window.innerWidth < 768) {
+            table.classList.remove('m-6');
+            table.classList.add('m-5');
+        } else {
+            table.classList.remove('m-5');
+            table.classList.add('m-6');
+        }
+    }
+
+    //end get size
     function printMyBillingArea() {
         var divContents = document.getElementById("myBillingArea").innerHTML;
         var a = window.open('', '');

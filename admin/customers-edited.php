@@ -1,6 +1,24 @@
 <?php include('includes/header.php');?>
 
-<div class="container-fluid px-4">
+<style>
+    /* Center card and limit max width */
+    .custom-card-container {
+        max-width: 600px;  /* max width of the card */
+        margin: 50px auto; /* center horizontally with margin */
+        padding: 0 15px;   /* small horizontal padding */
+    }
+
+    /* Make card full width on small screens */
+    @media (max-width: 640px) {
+        .custom-card-container {
+            max-width: 100%;
+            margin: 10px 10px;
+            padding: 0 10px;
+        }
+    }
+</style>
+
+<div class="container-fluid custom-card-container px-4">
     <div class="card mt-4 shadow-sm">
         <div class="card-header">
             <h4 class="mb-0">Edit Customers</h4>
@@ -30,7 +48,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="">Email</label>
-                        <input type="email" name="email" value="<?= $customer['data']['email'];?>"  required class="form-control">
+                        <input type="email" name="email" value="<?= $customer['data']['email'];?>"   class="form-control">
                     </div>
 
                     <div class="col-md-12 mb-3">

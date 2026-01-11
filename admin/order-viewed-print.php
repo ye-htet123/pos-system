@@ -44,58 +44,177 @@
                                         //print_r($orderDataRow);
 
                                         ?>
-                    <table class="m-12" style="width: 100%; margin-left: 90px;">
+              <style>
+/* Base screen styling */
+.print-table {
+    margin-left: 130px;
+   
+}
+ .col-md-12 {
+        text-align: center;
+    }
+ .thr-column {
+        text-align: right;
+    }
+.resp-card{
+    display: none;
+}
+.table-context{
+         
+        width:50%; 
+        margin-left: 120px;
+ }
 
-                        <tr>
-                            <td></td>
-                            <td>
+/* Print-specific styling */
+    @media print {
+        body {
+            margin: auto;
+            padding: auto;
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            background-color: #fff;
+            color: #000;
+        }
+        .col-md-12 {
+            text-align: center;
+        }
+       
+        .col-md-6 {
+            display: none;
+        }
+        .print-table{
+            display: none;
+        }
+        
+    }
+
+    
+    @media (max-width: 1000px){
+        .col-md-6{
+            text-align: center;
+            margin-right: 50rem;
+
+        }
+        .col-md-6{
+            text-align: center;
+        }
+         .resp-card{
+            display: block;
+        }
+        .table-context{
+             padding: 0.2rem;
+        font-size: 0.5rem;
+        margin-left: 40px;
+        }
+            
+    }
+    /* PDF specific layout */
+                        .pdf-layout {
+                            font-family: Arial, sans-serif;
+                            font-size: 12pt;
+                            background-color: #fff;
+                            color: #000;
+                            margin-right: 1000px;
+                        }
+                        .pdf-layout .col-md-6 {
+                            display: none;
+                        }
+                        .pdf-layout .print-table {
+                            display: none;
+                        }
+                        .pdf-layout .resp-card {
+                            display: block;
+                            border: none;
+                        }
+                        .pdf-layout .table-context {
+                            width: 80%;
+                            margin-left: 100px;
+                        }
+                        .pdf-layout img {
+                            max-width: 50px;
+                            max-height: 60px;
+                        }
+                        .pdf-layout table, .pdf-layout th, .pdf-layout td {
+                            border: 1px solid #ccc;
+                            border-collapse: collapse;
+                            text-align: center;
+                            padding: 5px;
+                        }
+</style>
+
+<div class=" mb-4 resp-card d-block d-lg-none">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 style="margin-bottom: 15px;">Company Details</h5>
+                <p style="margin: 0;">Company Name: ABC Corp</p>
+                <p style="margin: 0;">Address: 5678 Oak Street</p>
+                <p style="margin: 0;">Phone: (987) 654-3210</p>
+                                <br>
+                            </div>
+                         </div>
+                    <div class="row">
+                        <div class="col-md-6 snd-column">
+                             <div class="d-none d-md-block"> <!-- Hides on small screens -->
+        <h5>Customer Details</h5>
+                <p style="margin: 0;">Name: <?= $orderDataRow['name'] ?></p>
+                <p style="margin: 0;">Phone: <?= $orderDataRow['phone'] ?></p>
+                <p style="margin: 0;">Email: <?= $orderDataRow['email'] ?></p>
+        </div>
+                            <br>
+                        </div>
+                        <div class="col-md-6 thr-column">
+                           <div class="d-none d-md-block"> <!-- Hides on small screens -->
+        <h5>Invoice Details</h5>
+                <p style="margin: 0;">Invoice Number: <?= $orderDataRow['tracking_no'] ?></p>
+                <p style="margin: 0;">Date: <?= date('d M Y') ?></p>
+                <p style="margin: 0;">Address: 12 street LanbaTaw PYAY</p>
+        </div>
+                            <br>
+                            
+                            
+                        </div>
+                    </div>
+</div>
+
+            <div class="d-none d-lg-block">
+                    <table class="print-table" >
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div>
                                 <div>
-                                    <div>
-                                        <h5 style="margin-bottom: 15px;">Company Details</h5>
-                                        <p style="margin: 0;">Company Name: ABC Corp</p>
-                                        <p style="margin: 0;">Address: 5678 Oak Street</p>
-                                        <p style="margin: 0;">Phone: (987) 654-3210</p>
-                                    </div>
+                                    <h5 style="margin-bottom: 15px;">Company Details</h5>
+                                    <p style="margin: 0;">Company Name: ABC Corp</p>
+                                    <p style="margin: 0;">Address: 5678 Oak Street</p>
+                                    <p style="margin: 0;">Phone: (987) 654-3210</p>
                                 </div>
-                            </td>
-                            <td></td>
-                        </tr>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
 
-                        <tr>
-                            <td>
-                                <div>
-                                    <div>
-                                        <h5 style="margin-bottom: 15px;">Customer Details</h5>
-                                        <p style="margin: 0;">Name: <?= $orderDataRow['name'] ?></p>
-                                        <p style="margin: 0;">Phone: <?= $orderDataRow['phone'] ?></p>
-                                        <p style="margin: 0;">Email: <?= $orderDataRow['email'] ?></p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td></td>
-                            <td>
-                                <div>
-                                    <div>
-                                        <h5 style="margin-bottom: 15px;">Invoice Details</h5>
-                                        <p style="margin: 0;">Invoice Number: <?= $orderDataRow['tracking_no'] ?></p>
-                                        <p style="margin: 0;">Date: <?= date(' d M Y') ?></p>
-                                        <p style="margin: 0;">Address: 12 street LanbaTaw PYAY</p>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    <br><br>
+                    <tr>
+                        <td>
+                            <div class="d-none d-md-block"> <!-- Hides on small screens -->
+                            <h5>Customer Details</h5>
+                                    <p style="margin: 0;">Name: <?= $orderDataRow['name'] ?></p>
+                                    <p style="margin: 0;">Phone: <?= $orderDataRow['phone'] ?></p>
+                                    <p style="margin: 0;">Email: <?= $orderDataRow['email'] ?></p>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="d-none d-md-block"> <!-- Hides on small screens -->
+                            <h5>Invoice Details</h5>
+                                    <p style="margin: 0;">Invoice Number: <?= $orderDataRow['tracking_no'] ?></p>
+                                    <p style="margin: 0;">Date: <?= date('d M Y') ?></p>
+                                    <p style="margin: 0;">Address: 12 street LanbaTaw PYAY</p>
+                            </div>
+                        </td>
+                    </tr>
 
-
-                                            
-
-
-
-                                            
-                                            
-                                            
-                                            
+                     </table>
+              </div>
 
 
                     <?php
@@ -116,14 +235,14 @@
 
                                 ?>
 
-                            <div class="table-responsive mb-3">
-                            <table style="width:60%; margin-left: 90px;" align="center" cellpadding="10">
+                            <div class="table-responsive mb-6">
+                            <table  class="table-context"  align="center" cellpadding="10">
 
                                 <thead>
 
                                 <tr>
 
-                                <th align="start" style="border-bottom: 1px solid  #ccc;text-align: center;" width:"15%">ID</th>
+                                <th align="start" style="border-bottom: 1px solid  #ccc;text-align: center;" width:"15%">No</th>
                                 <th align="start" colspan="2" style="border-bottom: 1px solid  #ccc;text-align: center;">Product name</th>
                                 <th align="start" style="border-bottom: 1px solid  #ccc;text-align: center;" width:"10%">Price</th>
                                 <th align="start" style="border-bottom: 1px solid  #ccc;text-align: center;" width:"10%">Quantity</th>
@@ -257,9 +376,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 x: 15,
                 y: 15,
-                width: 170,
+                width: 150,
                 windowWidth: 650
             });
+           
         }
 
         window.downloadPDF = downloadPDF; // Ensure function is accessible globally if needed

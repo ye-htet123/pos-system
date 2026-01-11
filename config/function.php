@@ -26,15 +26,73 @@ function redirect($url, $status){
 }
 
 // Display message or status after any process
-function alertMessage(){
-    if(isset($_SESSION['status'])){
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        <h5>' . $_SESSION['status'] . '</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>';
+function alertMessage() {
+    if (isset($_SESSION['status'])) {
+        ?>
+        <style>
+            #customAlert {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color:rgb(67, 162, 181); /* green success */
+                color: white;
+                padding: 15px 30px;
+                border-radius: 6px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                z-index: 10000;
+                opacity: 1;
+                transition: opacity 0.5s ease;
+                display: flex;
+                align-items: center;
+                max-width: 400px;
+                min-width: 250px;
+            }
+            #customAlert.hide {
+                opacity: 0;
+            }
+            #customAlert button.closeBtn {
+                background: transparent;
+                border: none;
+                color: white;
+                font-size: 22px;
+                font-weight: bold;
+                margin-left: 20px;
+                cursor: pointer;
+                line-height: 1;
+            }
+            #customAlert button.closeBtn:hover {
+                color: #ddd;
+            }
+        </style>
+
+        <div id="customAlert">
+            <?= htmlspecialchars($_SESSION['status']); ?>
+            <button class="closeBtn" aria-label="Close">&times;</button>
+        </div>
+
+        <script>
+            const alertBox = document.getElementById('customAlert');
+            const closeBtn = alertBox.querySelector('.closeBtn');
+
+            closeBtn.addEventListener('click', () => {
+                alertBox.classList.add('hide');
+                setTimeout(() => alertBox.remove(), 500);
+            });
+
+            setTimeout(() => {
+                alertBox.classList.add('hide');
+                setTimeout(() => alertBox.remove(), 500);
+            }, 5000);
+        </script>
+        <?php
         unset($_SESSION['status']);
     }
 }
+
+
 
 // Insert record using this function 
 function insert($tableName, $data){

@@ -4,7 +4,31 @@
   $ownerEmailSubstring = 'owner@gmail.com'; 
   
   ?>
+<style>
+    /* Add your custom styles here */
+    .sb-sidenav-menu {
+        background-color: #1b1c1dff;
+    }
+    .nav-link {
+        color: #ffffff;
+    }
+    .nav-link.active {
+        background: linear-gradient(90deg, #4361ee, #8a1d37ff);
+    color: white;
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    border-radius: 20px;
 
+    }
+    .sb-sidenav-menu-nested .nav-link {
+    padding: 20px 15px;
+    font-size: 0.8rem;
+}
+
+.sb-sidenav-menu-nested .nav-link.active {
+    background: rgba(105, 126, 222, 0.2);
+}
+
+</style>
 
 <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -95,7 +119,7 @@
                                     <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                         
                                         <!-- Authentication Section -->
-                                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="<?= ($page == 'change_password.php') ? 'true' : 'false'; ?>" aria-controls="pagesCollapseAuth">
+                                        <a class="nav-link  <?= ($page == 'change_password.php') ? 'collapse active' : 'collapsed'; ?>" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="<?= ($page == 'change_password.php') ? 'true' : 'false'; ?>" aria-controls="pagesCollapseAuth">
                                             Authentication
                                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                         </a>
@@ -170,7 +194,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        <?= $_SESSION['loggedInUser']['name'] ?? 'Admin' ?>
                     </div>
                 </nav>
             </div>

@@ -1,5 +1,21 @@
 <?php include('includes/header.php'); ?>
+<style>
+    .col-md-12 {
+        text-align: center;
+    }
+    .thr-column {
+        text-align: right;
+    }
+    @media (max-width: 1000px){
+        .col-md-6{
+            text-align: center;
 
+        }
+        .col-md-6{
+            text-align: center;
+        }
+    }
+</style>
 <div class="container-fluid px-4">
     <div class="card mt-4 shadow-sm">
         <div class="card-header">
@@ -40,6 +56,31 @@
                 
                     ?>
                     <div class="card card-body shadow border-1 mb-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Order Details</h4>
+
+                                <label for="" class="mb-1">
+                                    Tracking No: <span class="fw-bold">  <?=  $orderData['tracking_no'];?></span>
+                                </label>
+                                <br>
+
+                                <label for="" class="mb-1">
+                                    Order Date: <span class="fw-bold">  <?=  $orderData['order_date'];?></span>
+                                </label>
+                                <br>
+                                
+                                <label for="" class="mb-1">
+                                Order Status <span class="fw-bold">  <?=  $orderData['order_status'];?></span>
+                                </label>
+                                <br>
+                                
+                                <label for="" class="mb-1">
+                                    Payment Mode: <span class="fw-bold">  <?=  $orderData['payment_mode'];?></span>
+                                </label>
+                                <br>
+                            </div>
+                         </div>
                     <div class="row">
                         <div class="col-md-6">
                             <h4>Order Details</h4>
@@ -64,7 +105,7 @@
                             </label>
                             <br>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 thr-column">
                             <h4>Customer Details</h4>
 
                             <label for="" class="mb-1">

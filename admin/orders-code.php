@@ -21,6 +21,60 @@ if (isset($_POST['addItem'])) {
 
         if (mysqli_num_rows($checkProduct)) {
             $row = mysqli_fetch_assoc($checkProduct);
+            if ($quantity == ""){
+                 redirect('orders-created.php', 'Pls fill available quantity !');
+        
+            }
+            if ($row['quantity'] < $quantity) {
+                redirect('orders-created.php', 'Only ' . $row['quantity'] . ' quantity available!');
+            }
+            
+            $productData = [
+                'product_id' => $row['id'],
+                'name' => $row['name'],
+                'image' => $row['image'],
+                'price' => $row['price'],
+                'quantity' => $quantity,
+            ];
+
+            if (!in_array($row['id'], $_SESSION['productItemIds'])) {
+                $_SESSION['productItemIds'][] = $row['id'];
+                $_SESSION['productItems'][] = $productData;
+            } else {
+                foreach ($_SESSION['productItems'] as $key => $prodSessionItem) {
+                    if ($prodSessionItem['product_id'] == $row['id']) {
+                        $newQuantity = $prodSessionItem['quantity'] + $quantity;
+                        if ($row['quantity'] < $newQuantity ) {
+                redirect('orders-created.php', 'Only ' . $row['quantity'] . ' quantity available!');
+                        }
+                        $productData['quantity'] = $newQuantity;
+                        $_SESSION['productItems'][$key] = $productData;
+                        break;
+                    }
+                }
+            }
+
+            redirect('orders-created.php', 'Item added: ' . $row['name']);
+        } else {
+            redirect('orders-created.php', 'No such product found!');
+        }
+    } else {
+        redirect('orders-created.php', 'Something is wrong with query');
+    }
+}
+
+
+if (isset($_POST['ordernow'])) {
+
+    $productId = validate($_POST['data-id']);
+    $quantity = 1;
+
+    $checkProduct = mysqli_query($conn, "SELECT * FROM products WHERE id='$productId' LIMIT 1");
+
+    if ($checkProduct) {
+
+        if (mysqli_num_rows($checkProduct)) {
+            $row = mysqli_fetch_assoc($checkProduct);
             
             if ($row['quantity'] < $quantity) {
                 redirect('orders-created.php', 'Only ' . $row['quantity'] . ' quantity available!');
@@ -47,6 +101,7 @@ if (isset($_POST['addItem'])) {
                         break;
                     }
                 }
+
             }
 
             redirect('orders-created.php', 'Item added: ' . $row['name']);
@@ -59,9 +114,92 @@ if (isset($_POST['addItem'])) {
 }
 
 
+
+if (isset($_POST['additem'])) {
+
+    $productId = validate($_POST['product_id']);
+    $quantity = validate($_POST['quantity']);
+
+    $checkProduct = mysqli_query($conn, "SELECT * FROM products WHERE id='$productId' LIMIT 1");
+
+    if ($checkProduct && mysqli_num_rows($checkProduct)) {
+    $row = mysqli_fetch_assoc($checkProduct);
+
+    if ($row['status'] == 1) {
+        echo json_encode([
+            'status' => 'warning',
+            'message' => 'Item not   available now !'
+        ]);
+        exit;
+    } elseif ($row['quantity'] < $quantity) {
+        echo json_encode([
+            'status' => 'warning',
+            'message' => 'Only ' . $row['quantity'] . ' quantity available!'
+        ]);
+        exit;
+    }
+
+    // Continue to add product...
+
+
+        $productData = [
+            'product_id' => $row['id'],
+            'name' => $row['name'],
+            'image' => $row['image'],
+            'price' => $row['price'],
+            'quantity' => $quantity,
+        ];
+
+        if (!isset($_SESSION['productItemIds'])) {
+            $_SESSION['productItemIds'] = [];
+        }
+        if (!isset($_SESSION['productItems'])) {
+            $_SESSION['productItems'] = [];
+        }
+
+        $found = false;
+        foreach ($_SESSION['productItems'] as $key => $prodSessionItem) {
+            if ($prodSessionItem['product_id'] == $row['id']) {
+                // Item already in cart, update quantity
+                $newQuantity = $prodSessionItem['quantity'] + $quantity;
+                $productData['quantity'] = $newQuantity;
+                $_SESSION['productItems'][$key] = $productData;
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $_SESSION['productItemIds'][] = $row['id'];
+            $_SESSION['productItems'][] = $productData;
+        }
+
+        // ✅ Return updated cart count (unique items)
+        $uniqueItemCount = count($_SESSION['productItems']);
+
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Item added: ' . $row['name'],
+            'cartCount' => $uniqueItemCount
+        ]);
+        exit;
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'No such product found!'
+        ]);
+        exit;
+    }
+}
+
+
+
 if(isset($_POST['productIncDec'])){
     $productId= validate($_POST['product_id']);
     $quantity= validate($_POST['quantity']);
+    if($quantity <= $_SESSION['stock']){
+
+   
 
     $flag = false;
      foreach($_SESSION['productItems'] as $key => $item){
@@ -71,6 +209,9 @@ if(isset($_POST['productIncDec'])){
 
          }
      }
+      } else{
+        jsonResponse(200,'success','limited');
+      }
      if($flag){
 
          jsonResponse(200,'success','Quantity Updated');

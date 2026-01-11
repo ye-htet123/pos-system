@@ -141,7 +141,7 @@ if(isset($_POST['updateCategory'])){
     $result = update('categories',$categoryId,$data);
 
     if ($result) {
-        redirect('categories.php?id='.$categoryId, 'Category Added successfully.');
+        redirect('categories.php?id='.$categoryId, 'Category update successfully.');
     } else {
         redirect('categories-edited.php?id='.$categoryId, 'Something went wrong!');
     }
@@ -151,6 +151,8 @@ if(isset($_POST['updateCategory'])){
 if (isset($_POST['saveProduct'])) {
     $category_id = validate($_POST['category_id']);
     $name = validate($_POST['name']);
+    $cost = validate($_POST['cost']);
+
     $description = validate($_POST['description']);
     $price = validate($_POST['price']);
     $quantity = validate($_POST['quantity']);
@@ -181,6 +183,7 @@ if (isset($_POST['saveProduct'])) {
     $data = [
         'category_id' => $category_id,
         'name' => $name,
+        'cost' => $cost,
         'description' => $description,
         'price' => $price,
         'quantity' => $quantity,
@@ -282,6 +285,7 @@ if(isset($_POST['saveCustomer'])){
 
     if ($result) {
         redirect('customers.php', 'Customer added successfully.');
+        
     } else {
         redirect('customers-created.php', 'Something went wrong!');
     }
@@ -300,12 +304,14 @@ if(isset($_POST['updateCustomer'])){
     
     $status = isset($_POST['status']) ? 1 : 0;
     if($name !=''){
+        if($email !=''){
         $emailCheck=mysqli_query($conn, "SELECT * FROM customers WHERE email='$email'AND id!='$customer_id'");
         if($emailCheck){
             if(mysqli_num_rows($emailCheck) > 0){
                 redirect('customers-edited.php?id='.$customer_id ,'Email already used by another user');
             }
         }
+    }
         $data = [
             'name' => $name,
             'email' => $email,
