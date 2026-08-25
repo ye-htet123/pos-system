@@ -10,12 +10,12 @@ function send_reset_email($to_email, $reset_link) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-         $mail->Username   = 'yhtetaung235@gmail.com'; // Your email
-        $mail->Password   = 'ypsbsmwthrvtbrke';        // App password
+         $mail->Username   = ''; // Your email
+        $mail->Password   = '';        // App password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('yhtetaung235@gmail.com', 'Your App Name');
+        $mail->setFrom('yhtetaung235@gmail.com', 'pos');
         $mail->addAddress($to_email);
 
         $mail->isHTML(true);
